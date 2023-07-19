@@ -18,7 +18,13 @@ refs.form.addEventListener('input', throttle((e) => {
     formData[e.target.name] = e.target.value;
     const formJSON = JSON.stringify(formData)
     localStorage.setItem(STORAGE_KEY, formJSON);
-    
+    for(const key in item) {
+        if(key === "message") {
+            formData.message = item.message
+        }   else if(key === "email") {
+            formData.email = item.email
+        }
+    }
 
 }, 500))
 
