@@ -1,4 +1,4 @@
-import Player from '@vimeo/player';
+// import Player from '@vimeo/player';
 import '@vimeo/player/dist/player';
 
 const iframe = document.querySelector('#vimeo-player');
