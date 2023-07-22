@@ -7,7 +7,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const galleryList = document.querySelector(".gallery");
 createGallery();
 var lightbox = new SimpleLightbox(".gallery a", {
-  captionData: "alt",
+  captionData: 'alt',
   captionDelay: 250,
 });
 function createGallery() {
