@@ -34,11 +34,16 @@ populateTextarea()
 
 function onFormSubmit(e) {
     e.preventDefault();
-    console.log(`email: ${refs.input.value}`);
-    console.log(`message: ${refs.textarea.value}`);
-    e.target.reset();
-    localStorage.clear();
-    item = {};
+    if(refs.input.value === "" || refs.textarea.value === "") {
+        alert("Всі поля мають бути заповненими");
+    } else {    
+        console.log(`email: ${refs.input.value}`);
+        console.log(`message: ${refs.textarea.value}`);
+        e.target.reset();
+        localStorage.clear();
+        item = {};
+}
+
 }
 
 function populateTextarea() {
