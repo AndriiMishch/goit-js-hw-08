@@ -6,10 +6,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const galleryList = document.querySelector(".gallery");
 createGallery();
-var lightbox = new SimpleLightbox(".gallery a", {
-  captionData: 'alt',
-  captionDelay: 250,
-});
+
 function createGallery() {
   const markup = galleryItems
     .map(({ preview, original, description }) => {
@@ -23,4 +20,14 @@ function createGallery() {
   galleryList.insertAdjacentHTML("afterbegin", markup);
 } 
 
-galleryList.style.listStyle = 'none'
+galleryList.style.listStyle = 'none';
+
+const lightbox = new SimpleLightbox(".gallery a", {
+  captionData: 'alt',
+  captionDelay: 250,
+});
+
+galleryList.addEventListener('click', (e) => {
+  e.preventDefault();
+  lightbox.open;
+})
