@@ -1,59 +1,58 @@
-import throttle from "lodash.throttle";
+import throttle from 'lodash.throttle';
 
 const refs = {
-    form: document.querySelector('.feedback-form'),
-    textarea: document.querySelector('textarea'),
-    input: document.querySelector('input'),
+  form: document.querySelector('form'),
+  input: document.querySelector('input'),
+  textArea: document.querySelector('textArea'),
 };
 
+let formData = {};
 const STORAGE_KEY = 'feedback-form-state';
-const formData = {};
-const sawedMessage = localStorage.getItem(STORAGE_KEY);
-let item = JSON.parse(sawedMessage)
+let items = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-refs.form.addEventListener('submit', onFormSubmit);
+refs.form.addEventListener('submit', onSubmit);
 
-refs.form.addEventListener('input', throttle((e) => {
-    for(const key in item) {
-        if(key === "message") {
-            formData.message = item.message
-        }   else if(key === "email") {
-            formData.email = item.email
+setItem();
+
+refs.form.addEventListener('input', throttle(onTyping, 500));
+
+function onSubmit(e) {
+  e.preventDefault();
+  if (refs.input.value === '' || refs.textArea.value === '') {
+    alert('all inputs must be fields');
+  } else {
+    localStorage.clear();
+    e.target.reset();
+  }
+}
+
+function setItem() {
+  if (items !== '') {
+    for (const item in items) {
+      for (const ref in refs) {
+        if (item === refs[ref].name) {
+          refs[ref].value = items[item];
         }
+      }
     }
-    formData[e.target.name] = e.target.value;
-    const formJSON = JSON.stringify(formData);
-    localStorage.setItem(STORAGE_KEY, formJSON);
-
-
-}, 500))
-
-populateTextarea()
-
-
-
-function onFormSubmit(e) {
-    e.preventDefault();
-    if(refs.input.value === "" || refs.textarea.value === "") {
-        alert("Всі поля мають бути заповненими");
-    } else {     
-
-        console.log(formData);
-        // console.log(`message: ${refs.textarea.value}`);
-        e.target.reset();
-        localStorage.clear();
-        item = {};
+  }
 }
 
-}
-
-function populateTextarea() {
-    for(const key in item) {
-        if(key === "message") {
-            refs.textarea.value = item.message
-        }   else if(key === "email") {
-            refs.input.value = item.email
+function onTyping(e) {
+  for (const ref in refs) {
+    if (refs[ref].name !== '') {
+      if (e.target.name === refs[ref].name) {
+        refs[ref].value = e.target.value;
+      } else {
+        items = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        for (let item in items) {
+          if (item === refs[ref].name) {
+            refs[ref].value = items[item];
+          }
         }
+      }
+      formData[refs[ref].name] = refs[ref].value;
     }
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
-
